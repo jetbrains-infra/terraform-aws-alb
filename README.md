@@ -10,8 +10,8 @@ Features:
 module "loadbalancer" {
   source                   = "github.com/jetbrains-infra/terraform-aws-alb"
   name                     = "alfa" // required
-  public_subnets           = "${aws_subnet.public_1.id},${aws_subnet.public_2.id}" // required two subnets in different az
-  private_subnets          = "${aws_subnet.private_1.id},${aws_subnet.private_2.id}" // required one at least 
+  public_subnets           = ["${aws_subnet.public_1.id}","${aws_subnet.public_2.id}"] // required two subnets in different az
+  private_subnets          = ["${aws_subnet.private_1.id}","${aws_subnet.private_2.id}"] // required one at least 
   default_target_group_arn = "${aws_alb_target_group.default.arn}"
   http_ports               = [80]
   https_ports              = [443]
