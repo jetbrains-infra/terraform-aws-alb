@@ -11,8 +11,7 @@ resource "aws_lb_listener_rule" "default" {
   }
 
   listener_arn = "${lookup(
-    element(
-      split(":", chomp(element(split("->", element(var.routs, count.index)), 0))), 1
-    ), local.listeners
+    local.listeners,
+    element(split(":", chomp(element(split("->", element(var.routs, count.index)), 0))), 1)
   )}"
 }
