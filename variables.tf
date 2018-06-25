@@ -33,7 +33,7 @@ variable "default_target_group_arn" {
   description = "Target group ARN for default routing rule"
 }
 
-variable "routs" {
+variable "routes" {
   type    = "list"
   default = []
 }
