@@ -66,5 +66,5 @@ locals {
 
 data "aws_subnet" "private" {
   count = "${length(var.private_subnets)}"
-  id    = "${element(var.private_subnets, count.index )}"
+  id    = "${element(var.private_subnets, count.index)}"
 }

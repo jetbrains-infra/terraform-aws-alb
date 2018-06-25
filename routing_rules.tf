@@ -1,4 +1,4 @@
-resource "aws_lb_listener_rule" "default" {
+resource "aws_alb_listener_rule" "default" {
   count = "${length(var.routes)}"
   action {
     target_group_arn = "${chomp(element(split("->", element(var.routes, count.index)), 1))}"
