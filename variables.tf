@@ -7,35 +7,26 @@ variable "public_subnets" {
   type        = "list"
 }
 
-variable "private_subnets" {
-  description = "List of AWS public subnet ids"
+variable "target_cidr_blocks" {
+  description = "List of AWS private target subnet CIDR"
   type        = "list"
 }
 
 variable "http_ports" {
   description = "List of plain http ports"
   type        = "list"
-  default     = []
+  default     = [80]
 }
 
 variable "https_ports" {
   description = "List of encrypted https ports"
   type        = "list"
-  default     = []
+  default     = [443]
 }
 
 variable "certificate_arn" {
   description = "Certificate for ALB that should contains "
   default     = ""
-}
-
-variable "default_target_group_arn" {
-  description = "Target group ARN for default routing rule"
-}
-
-variable "routes" {
-  type    = "list"
-  default = []
 }
 
 locals {
@@ -62,9 +53,4 @@ locals {
   listener_http_map  = "${zipmap(local.listener_http_ports, local.listener_http_arn)}"
   listener_https_map = "${zipmap(local.listener_https_ports, local.listener_https_arn)}"
   listeners          = "${merge(local.listener_http_map, local.listener_https_map)}"
-}
-
-data "aws_subnet" "private" {
-  count = "${length(var.private_subnets)}"
-  id    = "${element(var.private_subnets, count.index)}"
 }

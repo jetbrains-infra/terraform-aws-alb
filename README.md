@@ -8,20 +8,24 @@ Features:
 
 ```
 module "loadbalancer" {
-  source                   = "github.com/jetbrains-infra/terraform-aws-alb"
-  name                     = "alpha" // required
-  public_subnets           = ["${aws_subnet.public_1.id}","${aws_subnet.public_2.id}"] // required two subnets in different az
-  private_subnets          = ["${aws_subnet.private_1.id}","${aws_subnet.private_2.id}"] // required one at least 
-  default_target_group_arn = "${aws_alb_target_group.default.arn}"
-  http_ports               = [80]
-  https_ports              = [443]
-  certificate_arn          = "${aws_acm_certificate.default.arn}" //required if https_ports is not empty
-  routes                    = [
-    "example.net:80 -> ${aws_alb_target_group.main.arn}",
-    "example.net:443 -> ${aws_alb_target_group.main.arn}",
-    "*.example.net:443 -> ${aws_alb_target_group.main.arn}",
-    "example.com:443 -> ${aws_alb_target_group.main.arn}"
-  ]
+  source             = "github.com/jetbrains-infra/terraform-aws-alb"
+  name               = "demo"
+  target_cidr_blocks = ["${local.private_cidr_blocks}"]
+  public_subnets     = ["${module.vpc.subnet_public_1}","${module.vpc.subnet_public_2}"]
+  certificate_arn    = "${module.alb_certificate.arn}"
+}
+```
+
+All params:
+```
+module "loadbalancer" {
+  source             = "github.com/jetbrains-infra/terraform-aws-alb"
+  name               = "demo"
+  target_cidr_blocks = ["${local.private_cidr_blocks}"]
+  https_ports        = [443]
+  http_ports         = [80]
+  public_subnets     = ["${module.vpc.subnet_public_1}","${module.vpc.subnet_public_2}"]
+  certificate_arn    = "${module.alb_certificate.arn}"
 }
 ```
 
@@ -30,4 +34,3 @@ module "loadbalancer" {
 ## Outputs
 
 * `arn` - load balancer ARN
-* `ports` - listen ports
