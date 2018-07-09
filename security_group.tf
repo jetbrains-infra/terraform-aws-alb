@@ -4,21 +4,20 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_security_group_rule" "lb_allow_outgoing_connection_to_private_subnets" {
-  count                    = "${length(local.all_ports)}"
-  from_port                = "${element(local.all_ports, count.index)}"
-  protocol                 = "TCP"
+  protocol          = "-1"
+  from_port         = "0"
+  to_port           = "0"
   security_group_id = "${aws_security_group.lb.id}"
-  to_port           = "${element(local.all_ports, count.index)}"
   type              = "egress"
   cidr_blocks       = ["${var.target_cidr_blocks}"]
 }
 
 resource "aws_security_group_rule" "lb_allow_incoming_connection_from_internet" {
   count             = "${length(local.all_ports)}"
-  from_port         = "${element(local.all_ports, count.index)}"
   protocol          = "TCP"
-  security_group_id = "${aws_security_group.lb.id}"
+  from_port         = "${element(local.all_ports, count.index)}"
   to_port           = "${element(local.all_ports, count.index)}"
+  security_group_id = "${aws_security_group.lb.id}"
   type              = "ingress"
   cidr_blocks       = ["0.0.0.0/0"]
 }
