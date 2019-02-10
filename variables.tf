@@ -29,6 +29,16 @@ variable "certificate_arn" {
   default     = ""
 }
 
+variable "access_log_bucket" {
+  description = "Bucket to setore ALB access log"
+  default     = ""
+}
+
+variable "access_log_prefix" {
+  description = "Enable ALB access log"
+  default     = ""
+}
+
 locals {
   all_ports       = ["${concat(var.https_ports, var.http_ports)}"]
 }
@@ -53,4 +63,10 @@ locals {
   listener_http_map  = "${zipmap(local.listener_http_ports, local.listener_http_arn)}"
   listener_https_map = "${zipmap(local.listener_https_ports, local.listener_https_arn)}"
   listeners          = "${merge(local.listener_http_map, local.listener_https_map)}"
+}
+
+locals {
+  access_logs_enable = "${var.access_log_bucket == "" ? false : true}"
+  access_logs_bucket = "${var.access_log_bucket}"
+  access_logs_prefix = "${var.access_log_prefix}"
 }
