@@ -39,34 +39,31 @@ variable "access_log_prefix" {
   default     = ""
 }
 
-locals {
-  all_ports       = ["${concat(var.https_ports, var.http_ports)}"]
-}
-
 data "aws_subnet" "public_1" {
-  id = "${var.public_subnets[0]}"
+  id = "${local.public_subnets[0]}"
 }
 
 locals {
-  vpc_id = "${data.aws_subnet.public_1.vpc_id}"
-}
+  name                 = "${var.name}"
+  public_subnets       = ["${var.public_subnets}"]
+  http_ports           = "${var.http_ports}"
+  https_ports          = "${var.https_ports}"
+  all_ports            = ["${concat(local.https_ports, local.http_ports)}"]
+  vpc_id               = "${data.aws_subnet.public_1.vpc_id}"
+  target_cidr_blocks   = "${var.target_cidr_blocks}"
+  alb_certificate_arn  = "${var.certificate_arn}"
 
-// magic to get map of port to listener arn pairs
-locals {
+  // magic to get map of port to listener arn pairs
   listener_http_ports  = ["${aws_alb_listener.http.*.port}"]
   listener_http_arn    = ["${aws_alb_listener.http.*.arn}"]
   listener_https_ports = ["${aws_alb_listener.https.*.port}"]
   listener_https_arn   = ["${aws_alb_listener.https.*.arn}"]
+  listener_http_map    = "${zipmap(local.listener_http_ports, local.listener_http_arn)}"
+  listener_https_map   = "${zipmap(local.listener_https_ports, local.listener_https_arn)}"
+  listeners            = "${merge(local.listener_http_map, local.listener_https_map)}"
+
+  access_logs_enable   = "${var.access_log_bucket == "" ? false : true}"
+  access_logs_bucket   = "${var.access_log_bucket}"
+  access_logs_prefix   = "${var.access_log_prefix}"
 }
 
-locals {
-  listener_http_map  = "${zipmap(local.listener_http_ports, local.listener_http_arn)}"
-  listener_https_map = "${zipmap(local.listener_https_ports, local.listener_https_arn)}"
-  listeners          = "${merge(local.listener_http_map, local.listener_https_map)}"
-}
-
-locals {
-  access_logs_enable = "${var.access_log_bucket == "" ? false : true}"
-  access_logs_bucket = "${var.access_log_bucket}"
-  access_logs_prefix = "${var.access_log_prefix}"
-}
