@@ -39,12 +39,18 @@ variable "access_log_prefix" {
   default     = ""
 }
 
+variable "stack" {
+  description = "Tag 'Stack'"
+  default     = ""
+}
+
 data "aws_subnet" "public_1" {
   id = "${local.public_subnets[0]}"
 }
 
 locals {
   name                 = "${var.name}"
+  stack                = "${var.stack}"
   public_subnets       = ["${var.public_subnets}"]
   http_ports           = "${var.http_ports}"
   https_ports          = "${var.https_ports}"

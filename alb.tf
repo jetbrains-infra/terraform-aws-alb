@@ -9,4 +9,8 @@ resource "aws_alb" "ingress" {
     enabled = "${local.access_logs_enable}"
   }
 
+  tags {
+    Service = "${local.name}"
+    Stack   = "${local.stack}"
+  }
 }
