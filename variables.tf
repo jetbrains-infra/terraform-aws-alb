@@ -2,6 +2,10 @@ variable "name" {
   description = "Name of load balancer. Also used in security group name."
 }
 
+variable "project" {
+  description = "Project tag"
+}
+
 variable "public_subnets" {
   description = "List of AWS public subnet ids"
   type        = "list"
