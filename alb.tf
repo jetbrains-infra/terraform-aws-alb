@@ -1,5 +1,5 @@
 resource "aws_alb" "ingress" {
-  name            = "${local.name}"
+  name            = "${local.alb_name}"
   security_groups = ["${aws_security_group.alb.id}"]
   subnets         = ["${local.public_subnets}"]
 

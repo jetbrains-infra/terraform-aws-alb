@@ -54,6 +54,7 @@ data "aws_subnet" "public_1" {
 
 locals {
   name                 = "${var.name}"
+  alb_name             = "${replace(local.name, " ", "-")}"
   stack                = "${var.stack}"
   public_subnets       = ["${var.public_subnets}"]
   http_ports           = "${var.http_ports}"
