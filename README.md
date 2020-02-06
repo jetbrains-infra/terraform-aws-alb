@@ -39,3 +39,4 @@ module "loadbalancer" {
 ## Outputs
 
 * `arn` - load balancer ARN
+* `domain_name` - ALB domain name
