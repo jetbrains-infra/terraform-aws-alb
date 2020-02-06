@@ -1,16 +1,16 @@
 resource "aws_alb" "ingress" {
-  name            = "${local.alb_name}"
-  security_groups = ["${aws_security_group.alb.id}"]
-  subnets         = ["${local.public_subnets}"]
+  name            = local.alb_name
+  security_groups = [aws_security_group.alb.id]
+  subnets         = local.public_subnets
 
   access_logs {
-    bucket  = "${local.access_logs_bucket}"
-    prefix  = "${local.access_logs_prefix}"
-    enabled = "${local.access_logs_enable}"
+    bucket  = local.access_logs_bucket
+    prefix  = local.access_logs_prefix
+    enabled = local.access_logs_enable
   }
 
-  tags {
-    Service = "${local.name}"
-    Stack   = "${local.stack}"
+  tags = {
+    Service = local.name
+    Stack   = local.stack
   }
 }
