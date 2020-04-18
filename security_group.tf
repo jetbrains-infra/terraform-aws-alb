@@ -1,11 +1,7 @@
 resource "aws_security_group" "alb" {
-  name = "LoadBalancer ${local.name}"
+  name   = "LoadBalancer ${local.name}"
   vpc_id = local.vpc_id
-
-  tags = {
-    Service = local.name
-    Stack   = local.stack
-  }
+  tags   = local.tags
 }
 
 resource "aws_security_group_rule" "lb_allow_outgoing_connection_to_private_subnets" {

@@ -1,51 +1,38 @@
 variable "name" {
   description = "Name of load balancer. Also used in security group name."
 }
-
-variable "project" {
-  description = "Project tag"
-}
-
 variable "public_subnets" {
   description = "List of AWS public subnet ids"
   type        = list(string)
 }
-
 variable "target_cidr_blocks" {
   description = "List of AWS private target subnet CIDR"
   type        = list(string)
 }
-
 variable "http_ports" {
   description = "List of plain http ports"
   default     = [80]
 }
-
 variable "https_ports" {
   description = "List of encrypted https ports"
   default     = [443]
 }
-
 variable "certificate_arn" {
   description = "Certificate for ALB that should contains "
   default     = ""
 }
-
 variable "access_log_bucket" {
   description = "Bucket to setore ALB access log"
   default     = ""
 }
-
 variable "access_log_prefix" {
   description = "Enable ALB access log"
   default     = ""
 }
-
-variable "stack" {
-  description = "Tag 'Stack'"
-  default     = ""
+variable "tags" {
+  description = "Tags."
+  type        = map(string)
 }
-
 data "aws_subnet" "public_1" {
   id = local.public_subnets[0]
 }
@@ -53,7 +40,6 @@ data "aws_subnet" "public_1" {
 locals {
   name                 = var.name
   alb_name             = replace(local.name, " ", "-")
-  stack                = var.stack
   public_subnets       = var.public_subnets
   http_ports           = var.http_ports
   https_ports          = var.https_ports
@@ -74,5 +60,10 @@ locals {
   access_logs_enable   = var.access_log_bucket == "" ? false : true
   access_logs_bucket   = var.access_log_bucket
   access_logs_prefix   = var.access_log_prefix
+
+  tags = merge({
+    Name   = var.name,
+    Module = "ALB"
+  }, var.tags)
 }
 

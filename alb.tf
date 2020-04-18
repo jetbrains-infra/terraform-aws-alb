@@ -12,8 +12,5 @@ resource "aws_alb" "ingress" {
     }
   }
 
-  tags = {
-    Service = local.name
-    Stack   = local.stack
-  }
+  tags = local.tags
 }
