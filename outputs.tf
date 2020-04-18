@@ -2,6 +2,10 @@ output "arn" {
   value = aws_alb.ingress.arn
 }
 
-output "domain_name" {
+output "dns_name" {
   value = aws_alb.ingress.dns_name
+}
+
+output "dns_zone_id`" {
+  value = aws_alb.ingress.zone_id
 }

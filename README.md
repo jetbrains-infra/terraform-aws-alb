@@ -40,4 +40,5 @@ module "loadbalancer" {
 ## Outputs
 
 * `arn` - load balancer ARN
-* `domain_name` - ALB domain name
+* `dns_name` - ALB domain name
+* `dns_zone_id` - ALB domain zone id
