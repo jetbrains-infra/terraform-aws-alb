@@ -3,7 +3,7 @@ output "arn" {
 }
 
 output "arn_suffix" {
-  value = aws_alb.ingress.arn
+  value = aws_alb.ingress.arn_suffix
 }
 
 output "dns_name" {
