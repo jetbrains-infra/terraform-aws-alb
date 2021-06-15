@@ -5,8 +5,12 @@ resource "aws_alb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.default_http.arn
-    type             = "forward"
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      status_code  = "400"
+      message_body = "ALB does not know how to handle your request."
+    }
   }
 }
 
@@ -18,7 +22,11 @@ resource "aws_alb_listener" "https" {
   certificate_arn   = local.alb_certificate_arn
 
   default_action {
-    target_group_arn = aws_alb_target_group.default_https.arn
-    type             = "forward"
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      status_code  = "400"
+      message_body = "ALB does not know how to handle your request."
+    }
   }
 }
