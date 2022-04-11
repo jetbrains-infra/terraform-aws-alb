@@ -44,6 +44,10 @@ variable "access_log_prefix" {
   default     = ""
 }
 
+variable "internal" {
+  default = false
+}
+
 data "aws_subnet" "public_1" {
   id = local.public_subnets[0]
 }
@@ -59,6 +63,7 @@ locals {
   vpc_id              = data.aws_subnet.public_1.vpc_id
   target_cidr_blocks  = var.target_cidr_blocks
   alb_certificate_arn = var.certificate_arn
+  internal            = var.internal
 
   // magic to get map of port to listener arn pairs
   listener_http_ports  = aws_alb_listener.http.*.port

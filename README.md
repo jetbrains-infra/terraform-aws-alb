@@ -21,6 +21,7 @@ All params:
 module "loadbalancer" {
   source             = "github.com/jetbrains-infra/terraform-aws-alb?ref=vX.X.X" // see https://github.com/jetbrains-infra/terraform-aws-alb/releases
   name               = "demo"
+  internal           = false
   target_cidr_blocks = [local.private_cidr_blocks]
   https_ports        = [443]
   http_ports         = [80]
