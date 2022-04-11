@@ -20,5 +20,5 @@ resource "aws_security_group_rule" "lb_allow_incoming_connection_from_internet" 
   to_port           = element(local.all_ports, count.index)
   security_group_id = aws_security_group.alb.id
   type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = local.internal ? local.target_cidr_blocks : ["0.0.0.0/0"]
 }
