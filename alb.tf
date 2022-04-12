@@ -2,7 +2,7 @@ resource "aws_alb" "ingress" {
   name            = local.alb_name
   internal        = local.internal
   security_groups = [aws_security_group.alb.id]
-  subnets         = local.public_subnets
+  subnets         = local.subnets
 
   dynamic "access_logs" {
     for_each = local.access_logs_enable ? [""] : []
