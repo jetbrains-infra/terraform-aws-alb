@@ -1,8 +1,8 @@
 variable "name" {
   description = "Name of load balancer. Also used in security group name."
 }
-variable "public_subnets" {
-  description = "List of AWS public subnet ids"
+variable "subnets" {
+  description = "List of AWS subnet ids"
   type        = list(string)
 }
 variable "target_cidr_blocks" {
@@ -36,18 +36,18 @@ variable "tags" {
 variable "internal" {
   default = false
 }
-data "aws_subnet" "public_1" {
-  id = local.public_subnets[0]
+data "aws_subnet" "subnet_1" {
+  id = local.subnets[0]
 }
 
 locals {
   name                = var.name
   alb_name            = replace(local.name, " ", "-")
-  public_subnets      = var.public_subnets
+  subnets             = var.subnets
   http_ports          = var.http_ports
   https_ports         = var.https_ports
   all_ports           = concat(local.https_ports, local.http_ports)
-  vpc_id              = data.aws_subnet.public_1.vpc_id
+  vpc_id              = data.aws_subnet.subnet_1.vpc_id
   target_cidr_blocks  = var.target_cidr_blocks
   alb_certificate_arn = var.certificate_arn
   internal            = var.internal
