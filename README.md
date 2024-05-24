@@ -25,6 +25,7 @@ module "loadbalancer" {
   https_ports        = [443]
   http_ports         = [80]
   public_subnets     = [module.vpc.subnet_public_1, module.vpc.subnet_public_2]
+  idle_timeout       = 60
   certificate_arn    = module.alb_certificate.arn // see https://github.com/jetbrains-infra/terraform-aws-acm-certificate
   access_log_bucket  = module.s3_logs.bucket_id // see https://github.com/jetbrains-infra/terraform-aws-s3-bucket-for-logs
   access_log_prefix  = module.s3_logs.alb_logs_path
