@@ -56,6 +56,7 @@ data "aws_subnet" "public_1" {
 variable "tags" {
   description = "Tags."
   type        = map(string)
+  default     = {}
 }
 
 locals {
