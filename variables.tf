@@ -53,6 +53,11 @@ data "aws_subnet" "public_1" {
   id = local.public_subnets[0]
 }
 
+variable "tags" {
+  description = "Tags."
+  type        = map(string)
+}
+
 locals {
   name                = var.name
   internal            = var.internal
@@ -79,8 +84,8 @@ locals {
   access_logs_bucket = var.access_log_bucket
   access_logs_prefix = var.access_log_prefix
 
-  tags = {
+  tags = merge({
     Name   = var.name,
     Module = "ALB"
-  }
+  }, var.tags)
 }
